@@ -98,7 +98,7 @@ yc organization-manager federation saml list --organization-id org-id
 ```
 Копируем `id` федерации и используем егов следующей команде:
 ```
-yc organization-manager federation saml list-user-accounts --id fed-id --organization-id org-id
+yc organization-manager federation saml list-user-accounts --id fed-id 
 ```
 Команда должна вывести список пользователей.
 
@@ -107,15 +107,17 @@ yc organization-manager federation saml list-user-accounts --id fed-id --organiz
 ## Использование `yc` в скрипте Powershell
 В срипте необходимо использовать следующую команду для вывода в переменную всех пользователей с их идентификаторами:
 ```
- [array] $yc_users = yc organization-manager federation saml list-user-accounts --id fed-id --organization-id org-id --jq ".[] | [.id, .saml_user_account.name_id] | @csv"
+ [array] $yc_users = yc organization-manager federation saml list-user-accounts --id fed-id --jq ".[] | [.id, .saml_user_account.name_id] | @csv"
 ```
 
 Далее необходимо запросить список пользователей AD, которые должны реплицироваться в облако и сравнить два списка.
 Те пользователи, что должны быть исключены из облака, необходимо у далить командой:
 ```
-yc organization-manager federation saml delete-user-accounts --id fed-id --organization-id org-id --subject-ids user-id
+yc organization-manager federation saml delete-user-accounts --id fed-id --subject-ids user-id
 ```
 где `user-id` - id удаляемого из облака федеративного пользователя.
+
+Пример скрипта с комментариями расположен в этом же каталоге - [delete_yc_fed_accounts.ps1](delete_yc_fed_accounts.ps1)
 
 
 
